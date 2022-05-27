@@ -1,2 +1,2 @@
 #!/bin/bash
-cchmod 444 hello
+chmod ugo+x hello
