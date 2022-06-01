@@ -1,2 +1,2 @@
 #!/bin/bash
-ls -adR | wc
+ls -dR | wc
