@@ -1,2 +1,2 @@
 #!/bin/bash
-ls -AR | grep dwr | wc -l
+ls -AR | grep d | wc -l
