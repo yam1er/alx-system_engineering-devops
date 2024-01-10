@@ -1,4 +1,4 @@
-#!/usr/bin/env/ bash
+#!/usr/bin/env bash
 # Configures and Ubuntu server as follows:
 
 cp /etc/hosts ~/hosts.new
