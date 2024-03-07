@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+#Usage: ./1-world_wide_web <domain> <subdomain>
+#Display Information about subdomains
 
 domain="$1"
 subdomain="$2"
