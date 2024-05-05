@@ -1,7 +1,7 @@
 # Installs flask
 
 class { 'python':
-	pip3 => true,
+pip3 => true,
 }
 
 python::pip { 'flask':
