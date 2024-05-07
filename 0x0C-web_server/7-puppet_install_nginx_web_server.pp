@@ -1,3 +1,5 @@
+# installs and configs nginx server
+
 class nginx {
   package { 'nginx':
     ensure => installed,
