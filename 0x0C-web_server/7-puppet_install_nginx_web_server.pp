@@ -1,51 +1,19 @@
 # installs and configs nginx server
 
-class nginx {
-  package { 'nginx':
-    ensure => installed,
-  }
-
-  file { '/var/www/html/index.html':
-    content => 'Hello World!',
-  }
-
-  file { '/etc/nginx/sites-available/default':
-    ensure  => file,
-    content => '
-      server {
-        listen 80;
-        server_name _;
-
-        location / {
-          return 301 http://$host/redirect_me;
-        }
-
-        location /redirect_me {
-          return 301 http://$host/;
-        }
-
-        location / {
-          root /var/www/html;
-          index index.html;
-        }
-      }
-    ',
-    notify  => Service['nginx'],
-  }
-
-  file { '/etc/nginx/sites-enabled/default':
-    ensure  => 'link',
-    target  => '/etc/nginx/sites-available/default',
-    require => File['/etc/nginx/sites-available/default'],
-    notify  => Service['nginx'],
-  }
-
-  service { 'nginx':
-    ensure    => running,
-    enable    => true,
-    hasstatus => true,
-    hasrestart => true,
-  }
+package { 'nginx':
+  ensure => 'installed',
 }
 
-include nginx
+file { 'index.nginx-debian.html':
+  path    => '/var/www/html/index.nginx-debian.html',
+  content => 'Hello World!',
+}
+
+exec { 'config':
+  command  => 'sed -i "s/server_name _;/server_name _;\n\trewrite ^\/redirect_me https:\/\/www.youtube.com/watch?v=TfgBHC5gvTI permanent;/" /etc/nginx/sites-available/default',
+  provider => 'shell',
+}
+exec { 'start':
+  command  => 'sudo service nginx restart',
+  provider => 'shell',
+}
