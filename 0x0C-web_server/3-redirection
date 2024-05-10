@@ -1,30 +1,12 @@
 #!/usr/bin/env bash
-# Installs Nginx with the following configurations:
-## server
-## Nginx should be listening on port 80
-## When querying Nginx at its root / with a GET request (requesting a page)\
-### using curl, it must return a page that contains the string Hello World!
-## As an answer file, write a Bash script that configures a new Ubuntu machine\
-### to respect above requirements (this script will be run on the server itself)
-## You can’t use systemctl for restarting nginx
+# Create a new server block configuration file for the domain to redirect
+# The redirection must be a “301 Moved Permanently”
 
-apt-get -y update
-apt-get -y install nginx
-
-touch /var/www/html/index.html
-echo "Hello World!" > /var/www/html/index.html
-
-printf %s "server {
-    listen		80 default_server;
-    listen		[::]:80 default_server;
-
-    root		/var/www/html;
-    index		index.html index.htm index.nginx-debian.html;
-
-    location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=TfgBHC5gvTI;
-    }
-}
-" > /etc/nginx/sites-available/default
-
-service nginx restart
+sudo apt-get -y update
+sudo apt-get -y upgrade
+sudo apt-get -y install nginx
+sudo service nginx start
+new_string="\\\trewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
+sudo sed -i "54i $new_string" /etc/nginx/sites-available/default
+sudo service nginx restart
+sudo service nginx reload
