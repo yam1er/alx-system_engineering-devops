@@ -1,36 +1,25 @@
-# Install Nginx package
-package { 'nginx':
-  ensure => installed,
+# Script to install nginx using puppet
+
+package {'nginx':
+  ensure => 'present',
 }
 
-# Configure Nginx server
-file { '/etc/nginx/sites-available/default':
-  ensure  => present,
-  content => "
-    server {
-      listen 80;
-      root /var/www/html;
-      index index.html;
+exec {'install':
+  command  => 'sudo apt-get update ; sudo apt-get -y install nginx',
+  provider => shell,
 
-      location / {
-        return 200 'Hello World!';
-      }
-
-      location /redirect_me {
-        return 301 https://www.google.com/;
-      }
-
-      error_page 404 /404.html;
-      location = /404.html {
-        return 200 'Ceci n\'est pas une page';
-      }
-    }
-  ",
 }
 
-# Enable Nginx service
-service { 'nginx':
-  ensure    => running,
-  enable    => true,
-  subscribe => File['/etc/nginx/sites-available/default'],
+exec {'Hello':
+  command  => 'echo "Hello World!" | sudo tee /var/www/html/index.html',
+  provider => shell,
+}
+
+exec {'sudo sed -i "s/listen 80 default_server;/listen 80 default_server;\\n\\tlocation \/redirect_me {\\n\\t\\treturn 301 https:\/\/blog.ehoneahobed.com\/;\\n\\t}/" /etc/nginx/sites-available/default':
+  provider => shell,
+}
+
+exec {'run':
+  command  => 'sudo service nginx restart',
+  provider => shell,
 }
