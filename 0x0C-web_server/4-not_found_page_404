@@ -12,7 +12,7 @@ echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
 printf %s "server {
     listen 80;
     listen [::]:80 default_server;
-    root   root   /var/www/html/;
+    root   /var/www/html/;
     index  index.html index.htm;
 
     location /redirect_me {
