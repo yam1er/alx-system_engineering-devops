@@ -5,7 +5,7 @@ apt-get update
 apt-get install -y nginx
 
 echo "hello world" | sudo tee /var/www/html/index.html
-echo "Ceci n'est pas une page" | sudo tee /etc/nginx/sites-available/404.html
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
 
 printf %s "server {
     listen 80;
