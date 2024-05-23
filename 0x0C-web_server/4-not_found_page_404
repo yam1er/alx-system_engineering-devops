@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # 404 Not Found Page
 
-apt-get update
-apt-get -y install nginx
+sudo apt-get update
+sudo apt-get -y install nginx
 
 echo "hello world" | sudo tee /var/www/html/index.html
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
