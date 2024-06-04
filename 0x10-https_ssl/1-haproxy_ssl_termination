@@ -36,9 +36,22 @@ defaults
 frontend  yam-frontend
         bind *:80
         mode http
+        http-request set-header X-Forwarded-Proto http
+        redirect scheme https if !{ ssl_fc }
+        default_backend yam-backend
+frontend  yam-frontend-https
+        mode http
+        bind *:443 ssl crt /etc/haproxy/certs/www.yambnb.tech.pem
+        http-request set-header X-Forwarded-Proto https
+        acl letsencrypt-acl path_beg /.well-known/acme-challenge/
+        use_backend letsencrypt-backend if letsencrypt-acl
         default_backend yam-backend
 backend yam-backend
+        mode http
+        http-request set-header X-Forwarded-For %[src]
         balance roundrobin
         server web-01 34.203.77.54:80 check
         server web-02 100.25.142.179:80 check
-
+backend letsencrypt-backend
+        mode http
+        server letsencrypt 127.0.0.1:54321
